@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>agius' bookmarklet maker</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <style type="text/css">
+      body { overflow: hidden; }
+      #editor {
+              position: relative !important;
+              border: 1px solid gray;
+              margin: auto;
+              height: 500px;
+              width: 100%;
+              margin-bottom: 2em; }
+    </style>
+    
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://rawgithub.com/ajaxorg/ace-builds/master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="crunch.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/textmate");
+            editor.getSession().setMode("ace/mode/javascript");
+        
+        $("#bmm").on("click", function(e){
+          e.preventDefault();
+          js = crunch(editor.getValue());
+          js = "javascript:(function(){ " + js + " })();"
+          if($("#bmm-link").length > 0)
+            $("#bmm-link").fadeOut(400, function(){
+              $(this).attr("href", js);
+              $(this).html($("#title").val());
+            }).fadeIn();
+          else
+            $("#bmm").after("&nbsp;&nbsp;&nbsp;<strong>Drag this to your bookmark bar:</strong>&nbsp;&nbsp;&nbsp;&nbsp;<a id='bmm-link' class='btn' href='" + js + "'>" + $("#title").val() + "</a>");
+          return false;
+        });
+      });
+    </script>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          
+          <div class="page-header">
+            <h1><a href="http://atevans.com">agius'</a> bookmarklet maker</h1>
+          </div>
+          
+          <input id="title" type="text" class="span12" placeholder="Bookmarklet Title" />
+          <div id="editor">// javascript here</div>
+          
+          <button id="bmm" class="btn btn-primary">Bookmarletify</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
