@@ -21,6 +21,7 @@ function crunch(f) {
   output = compressWhiteSpace(output);
   output = combineLiteralStrings(output);
   output = restoreLiteralStrings(output);
+  output = replaceQuotes(output);
 
   return output;
 }
@@ -135,5 +136,11 @@ function restoreLiteralStrings(s) {
   for (i = 0; i < literalStrings.length; i++)
     s = s.replace(new RegExp("__" + i + "__"), literalStrings[i]);
 
+  return s;
+}
+
+function replaceQuotes(s){
+  s = s.replace(/"/g, "&quot;");
+  s = s.replace(/'/g, "&apos;");
   return s;
 }
